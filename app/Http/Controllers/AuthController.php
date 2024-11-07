@@ -9,6 +9,8 @@ use App\Models\User;
 use App\Services\UserService;
 use App\Validations\AuthValidation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
@@ -43,9 +45,9 @@ class AuthController extends Controller
     }
 
 
-    public function me()
+    public function me(Request $request)
     {
-        return Response::send_response("Account created successfully.", auth()->user());
+        return Response::send_response("Consult done.", Auth::user());
     }
 
     public function logout()
@@ -63,6 +65,7 @@ class AuthController extends Controller
     {
         return [
             'access_token' => $token,
+            'refresh_token' => auth()->refresh(),
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60
         ];

@@ -13,3 +13,8 @@ Route::get('/health', function () {
 
 Route::post('/auth/create-account', [ AuthController::class, 'create_account' ]);
 Route::post('/auth/login', [ AuthController::class, 'login' ]);
+Route::post('/auth/login', [ AuthController::class, 'login' ]);
+
+Route::middleware(['auth:api'])->group(function () {
+    Route::get('/auth/get_info', [ AuthController::class, 'me' ]);
+});
