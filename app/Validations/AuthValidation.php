@@ -19,11 +19,7 @@ class AuthValidation {
         $validator = Validator::make($request->all(), $rules);
 
         if($validator->fails()) {
-            throw new RequestValidationFailedException(
-                            'Validation failed', [
-                                'mesage' => 'Missing params...',
-                                'data' => $validator->errors(),
-                            ]);
+            throw new RequestValidationFailedException($validator->errors());
         }
 
         return true;

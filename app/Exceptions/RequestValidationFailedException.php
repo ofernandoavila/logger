@@ -2,18 +2,9 @@
 
 namespace App\Exceptions;
 
-class RequestValidationFailedException extends \Exception {
-    public function __construct(
-        string $message,
-        public array $options,
-        public string $type = 'error'
-    )
+class RequestValidationFailedException extends Exception {
+    public function __construct(public mixed $errors)
     {
-        parent::__construct($message);
-    }
-
-    public function getType()
-    {
-        return $this->type;
+        parent::__construct('Validation failed', 403, $errors);
     }
 }

@@ -36,8 +36,11 @@ class ValidateRequest
                 
                 $controller = $validator->controller;
                 $action = $validator->action;
+                $onGet = $validator->onGet;
                 
-                if ($_SERVER['REQUEST_METHOD'] === "POST" && method_exists($controller, $action)) {
+                if ($_SERVER['REQUEST_METHOD'] === "POST" && method_exists($controller, $action) ||
+                    $onGet && method_exists($controller, $action)
+                ) {
                     $controller::$action($request);
                 }
             }

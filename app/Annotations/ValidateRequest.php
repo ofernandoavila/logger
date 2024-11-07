@@ -8,13 +8,16 @@ use Attribute;
 class ValidateRequest {
     public string $controller;
     public string $action;
+    public string $onGet;
 
     public function __construct(
         string $controller,
-        string $action
+        string $action,
+        bool $onGet = false
     )
     {
         $this->controller = $controller;
         $this->action = $action;
+        $this->onGet = $onGet;
     }
 }

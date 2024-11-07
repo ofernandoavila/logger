@@ -5,12 +5,10 @@ namespace App\Http\Controllers;
 use App\Annotations\ValidateRequest;
 use App\Exceptions\AccessUnauthorizedException;
 use App\Http\Response;
-use App\Models\User;
 use App\Services\UserService;
 use App\Validations\AuthValidation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
@@ -43,7 +41,6 @@ class AuthController extends Controller
             return Response::send_response("Account created successfully.", $user);
         }
     }
-
 
     public function me(Request $request)
     {

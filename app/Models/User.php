@@ -49,6 +49,13 @@ class User extends Authenticatable implements JWTSubject
         ];
     }
 
+    public function organizations()
+    {
+        return $this->belongsToMany(Organization::class, 'organization_user')
+                    ->withPivot('role_id')
+                    ->withTimestamps();
+    }
+
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
