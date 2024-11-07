@@ -1,9 +1,7 @@
-version: '3.8'
-
 services:
   db:
     image: mysql:latest
-    container_name: php-logger-debug
+    container_name: db
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: PhpLogger
@@ -11,27 +9,38 @@ services:
       MYSQL_USER: user_phplogger
       MYSQL_PASSWORD: PhpLogger
     ports:
-      - "8081:3306"
+      - "3307:3306"
+    networks:
+      logger_network:
+        ipv4_address: 10.0.0.2
     volumes:
       - mysql-data:/var/lib/mysql
 
   app:
-    image: php:8.2-apache
-    container_name: php_logger-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: app
     working_dir: /var/www/html
     volumes:
-     - ../:/var/www/html
-     - ./apache-config.conf:/etc/apache2/sites-available/000-default.conf
+      - ../:/var/www/html
+      - ./apache-config.conf:/etc/apache2/sites-available/000-default.conf
     environment:
-     - APACHE_DOCUMENT_ROOT=/var/www/html/public
+      - APACHE_DOCUMENT_ROOT=/var/www/html/public
     depends_on:
-     - db
+      - db
     ports:
-     - "3500:80"
-    command: >
-     /bin/bash -c "php artisan key:generate &&
-                    php artisan migrate --force &&
-                    apache2-foreground"
+      - "8000:80"
+    networks:
+      logger_network:
+        ipv4_address: 10.0.0.3
 
 volumes:
   mysql-data:
+
+networks:
+  logger_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.0.0.0/16
